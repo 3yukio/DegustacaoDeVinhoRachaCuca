@@ -1,0 +1,158 @@
+
+/* A resposta será do tipo:
+mesa(degustador(_,_,_,_,_,_),
+     degustador(_,_,_,_,_,_),
+     degustador(_,_,_,_,_,_),
+     degustador(_,_,_,_,_,_),
+     degustador(_,_,_,_,_,_)).
+*/
+
+resolve(Sol) :-
+    Sol = mesa(_,_,_,_,_),
+    % Elias está em algum lugar à direita do degustador de camiseta branca.
+    algum_lugar_a_direita(A, B, Sol),
+    nome(A, elias),
+    camiseta(B, branca),
+    % O homem que nasceu em Boa Vista está de camiseta amarela.
+    homem(C,Sol),
+    estado(C, roraima),
+    camiseta(C, amarela),
+    % O degustador que gosta de queijo roquefort está ao lado do que gosta de queijo emmenthal.
+    aolado(D,E,Sol),
+    queijo(D, roquefort),
+    queijo(E, emmenthal),
+    % O paraibano está na terceira posição.
+    homem(F,Sol),
+    estado(F, paraiba),
+    terceira(F,Sol),
+    % O degustador que nasceu no sul do Brasil gosta de acampar.
+    homem(G,Sol),
+    estado(G, santacatarina),
+    hobby(G, acampar),
+    % Em uma das pontas está o homem que gosta de montanhismo.
+    uma_das_pontas(H,Sol),
+    hobby(H, montanhismo),
+    % Quem está degustando o vinho tipo tannat está ao lado de quem gosta de queijo emmenthal.
+    aolado(I,J,Sol),
+    vinho(I, tannat),
+    queijo(J, emmenthal),
+    % O catarinense está exatamente à esquerda do homem que está degustando o vinho tipo carmenere.
+    exatamente_a_esquerda(K,L,Sol),
+    estado(K, santacatarina),
+    vinho(L, carmenere),
+    % marcio está degustando o vinho tipo tannat.
+    homem(M,Sol),
+    nome(M, marcio),
+    vinho(M, tannat),
+    % O homem que gosta de queijo gorgonzola está ao lado do homem que gosta de pescar.
+    aolado(N,O,Sol),
+    queijo(N, gorgonzola),
+    hobby(O, pescar),
+    % ferdinando está na primeira posição.
+    nome(P, ferdinando),
+    primeira(P,Sol),
+    % O degustador de Branco está em algum lugar à esquerda do paraibano.
+    algum_lugar_a_esquerda(Q,R,Sol),
+    camiseta(Q, branca),
+    estado(R, paraiba),
+    % Na segunda posição está o homem que está degustando o vinho tipo merlot.
+    segunda(S,Sol),
+    vinho(S, merlot),
+    % O homem que gosta de bilhar está ao lado do que gosta de queijo brie.
+    aolado(T,U,Sol),
+    hobby(T, bilhar),
+    queijo(U, brie),
+    % O degustador de camiseta verde está em algum lugar à esquerda do degustador que nasceu em Minas Gerais.
+    algum_lugar_a_esquerda(V,W,Sol),
+    camiseta(V, verde),
+    estado(W, minasgerais),
+    % Na terceira posição está o homem que está degustando o vinho tipo cabernet.
+    terceira(Y,Sol),
+    vinho(Y,cabernet),
+    % O homem de camiseta verde está ao lado do homem que gosta de acampar.
+    aolado(Z,A1,Sol),
+    camiseta(Z, verde),
+    hobby(A1, acampar),
+    % Josué está na quinta posição.
+    quinta(B1,Sol),
+    nome(B1, josue),
+    % O degustador que gosta de pescar está em algum lugar à direita do degustador de camiseta azul.
+    algum_lugar_a_direita(C1, D1, Sol),
+    hobby(C1, pescar),
+    camiseta(D1, azul),
+    % O homem que gosta de queijo emmenthal está na terceira posição.
+    terceira(E1,Sol),
+    queijo(E1, emmenthal),
+    % O mato-grossense está em algum lugar à direita do degustador de camiseta amarela.
+    algum_lugar_a_direita(F1,G1,Sol),
+    estado(F1, matogrosso),
+    camiseta(G1, amarela),
+    % Quem gosta de montanhismo está ao lado de quem gosta de bilhar.
+    aolado(H1,I1,Sol),
+    hobby(H1, montanhismo),
+    hobby(I1, bilhar),
+    % Na segunda posição está o degustador que gosta de queijo roquefort.
+    segunda(J1,Sol),
+    queijo(J1, roquefort),
+    % Fechamento
+    homem(K1, Sol),
+    nome(K1, camilo),
+    homem(L1, Sol),
+    hobby(L1, fotografar),
+    homem(M1, Sol),
+    queijo(M1, goula),
+    homem(N1, Sol),
+    vinho(N1, malbec),
+    homem(O1, Sol),
+    camiseta(O1, vermelha).
+
+
+homem(X,mesa(X,_,_,_,_)).
+homem(X,mesa(_,X,_,_,_)).
+homem(X,mesa(_,_,X,_,_)).
+homem(X,mesa(_,_,_,X,_)).
+homem(X,mesa(_,_,_,_,X)).
+
+primeira(X,mesa(X,_,_,_,_)).
+segunda(X,mesa(_,X,_,_,_)).
+terceira(X,mesa(_,_,X,_,_)).
+quarta(X,mesa(_,_,_,X,_)).
+quinta(X,mesa(_,_,_,_,X)).
+
+camiseta(degustador(X,_,_,_,_,_),X).
+nome(degustador(_,X,_,_,_,_),X).
+vinho(degustador(_,_,X,_,_,_),X).
+queijo(degustador(_,_,_,X,_,_),X).
+hobby(degustador(_,_,_,_,X,_),X).
+estado(degustador(_,_,_,_,_,X),X).
+
+aolado(X,Y,mesa(X,Y,_,_,_)).
+aolado(X,Y,mesa(Y,X,_,_,_)).
+aolado(X,Y,mesa(_,X,Y,_,_)).
+aolado(X,Y,mesa(_,Y,X,_,_)).
+aolado(X,Y,mesa(_,_,X,Y,_)).
+aolado(X,Y,mesa(_,_,Y,X,_)).
+aolado(X,Y,mesa(_,_,_,X,Y)).
+aolado(X,Y,mesa(_,_,_,Y,X)).
+
+uma_das_pontas(X,mesa(X,_,_,_,_)).
+uma_das_pontas(X,mesa(_,_,_,_,X)).
+
+algum_lugar_a_direita(X,Y,mesa(Y,X,_,_,_)).
+algum_lugar_a_direita(X,Y,mesa(Y,_,X,_,_)).
+algum_lugar_a_direita(X,Y,mesa(Y,_,_,X,_)).
+algum_lugar_a_direita(X,Y,mesa(Y,_,_,_,X)).
+algum_lugar_a_direita(X,Y,mesa(_,Y,X,_,_)).
+algum_lugar_a_direita(X,Y,mesa(_,Y,_,X,_)).
+algum_lugar_a_direita(X,Y,mesa(_,Y,_,_,X)).
+algum_lugar_a_direita(X,Y,mesa(_,_,Y,X,_)).
+algum_lugar_a_direita(X,Y,mesa(_,_,Y,_,X)).
+algum_lugar_a_direita(X,Y,mesa(_,_,_,Y,X)).
+
+algum_lugar_a_esquerda(X,Y,Mesa) :-
+    algum_lugar_a_direita(Y,X,Mesa).
+    
+exatamente_a_esquerda(X,Y,mesa(X,Y,_,_,_)).
+exatamente_a_esquerda(X,Y,mesa(_,X,Y,_,_)).
+exatamente_a_esquerda(X,Y,mesa(_,_,X,Y,_)).
+exatamente_a_esquerda(X,Y,mesa(_,_,_,X,Y)).
